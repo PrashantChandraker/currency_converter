@@ -1,3 +1,5 @@
+import 'package:currency_converter/components/any_To_any.dart';
+import 'package:currency_converter/components/usd_To_Any.dart';
 import 'package:currency_converter/functions/fetch_rates.dart';
 import 'package:currency_converter/models/rates_model.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +13,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   late Future<RatesModel> result;
-  // late Future<Map>
+  late Future<Map> allCurrencies;
 
   final formkey = GlobalKey<FormState>();
 
@@ -19,6 +21,7 @@ class _HomeState extends State<Home> {
   void initState(){
     super.initState();
     result = fetchrates();
+    allCurrencies = fetchcurrencies();
   }
   Widget build(BuildContext context) {
     var h = MediaQuery.of(context).size.height;
@@ -53,9 +56,23 @@ class _HomeState extends State<Home> {
                 );
               }
               return Center(
-                child: Text(snapshot.data!.rates.toString(), style: TextStyle(fontSize: 20, color: Colors.white),)
+                child: FutureBuilder<Map>(future: allCurrencies, builder: (context, currSnapshot){
+                  if(currSnapshot.connectionState == ConnectionState.waiting){
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                    
+                  }
+                  return Column(
+                    children: [
+                      UsdToAny(rates: snapshot.data!.rates, currencies: currSnapshot.data!),
+                      SizedBox(height: 20,),
+                      AnyToAny(rates:snapshot.data!.rates, currencies: currSnapshot.data!)
+                    ],
+                  );
+                },),
               );
-            }),
+            },),
           ),
         ),
       ),
