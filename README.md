@@ -1,8 +1,11 @@
 # currency_converter
+Using Api from Open Exchange rates
 
-A new Flutter project.
+Here is a sample of the App
 
-## Getting Started
+https://github.com/PrashantChandraker/currency_converter/assets/122458614/0f4e5ffe-70a6-4fdf-a948-7056f1fbc316
+
+
 
 This project is a starting point for a Flutter application.
 
